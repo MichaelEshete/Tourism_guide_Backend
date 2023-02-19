@@ -122,7 +122,7 @@ app.post("/register", async (req, res) => {
     } 
 });
 app.post("/addItems", async (req, res) => {
-  const { tit, disc } = req.body;
+  const { tit, disc, postImage } = req.body;
   const role= "user";
 
   // const encreptedPassword =await bcrypt.hash(password, 10);
@@ -130,11 +130,12 @@ app.post("/addItems", async (req, res) => {
   console.log(disc);
   const description=disc;
   const  title =tit;
+  const file =  postImage;
   try {
     await addItems.create({
       title,
      description,
-     
+     file
        } );
       res.send({ status: "ok" });
       console.log("success");
@@ -146,6 +147,21 @@ app.post("/addItems", async (req, res) => {
       
   } 
 });
+
+app.post("/Profile", async(req,res)=>{
+  console.log("items");
+  addItems.find((err,data)=>{
+    if(err){
+      res.status(500).send(err);
+
+    }else{
+      res.status(200).send(data);
+    }
+
+  }
+  )
+
+})
   
 app.post("/register1", async (req, res) => {
   const { userName,companyName,phoneNumber,email,password,cpassword } = req.body;
