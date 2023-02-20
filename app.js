@@ -15,7 +15,6 @@ mongoose.set('strictQuery', true);
 
 
 
-
 const mongoUrl = "mongodb+srv://root:root@objid.y1p0anh.mongodb.net/?retryWrites=true&w=majority";
 mongoose  
   .connect(mongoUrl, {
@@ -122,7 +121,7 @@ app.post("/register", async (req, res) => {
     } 
 });
 app.post("/addItems", async (req, res) => {
-  const { tit, disc, postImage } = req.body;
+  const { tit, disc, postImage, email } = req.body;
   const role= "user";
 
   // const encreptedPassword =await bcrypt.hash(password, 10);
@@ -135,7 +134,8 @@ app.post("/addItems", async (req, res) => {
     await addItems.create({
       title,
      description,
-     file
+     file,
+     email
        } );
       res.send({ status: "ok" });
       console.log("success");
@@ -150,17 +150,33 @@ app.post("/addItems", async (req, res) => {
 
 app.post("/Profile", async(req,res)=>{
   console.log("items");
-  addItems.find((err,data)=>{
+  const email = req.body.email
+  addItems.find({ email })
+  .then(data => {
     if(err){
       res.status(500).send(err);
 
     }else{
       res.status(200).send(data);
     }
+  })
+  .catch (console.error)
+})
 
+
+app.get("/list", async(req, res) => {
+  try {
+    addItems.find((err, data) => {
+      if (err) {
+        res.status(500).send({ message: error.message })
+      } else {
+        res.status(200).send(data)
+      }
+    })
+
+  } catch(e) {
+    console.log(e.message)
   }
-  )
-
 })
   
 app.post("/register1", async (req, res) => {
@@ -206,7 +222,7 @@ app.post("/login-user", async (req, res) => {
     if (res.status(201)) {
       const role= user.role;
       console.log(role);
-      return res.json({ status: "ok", role ,data: token});
+      return res.json({ status: "ok", role ,data: token, email});
     } else {
       return res.json({ error: "error" });
     }
