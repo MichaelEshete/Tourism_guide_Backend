@@ -19,7 +19,7 @@ const UserDetailsScehma = new mongoose.Schema(
 
 );
 
-mongoose.model("Users", UserDetailsScehma);
+mongoose.model("Users", UserDetailsScehma); 
 
 const addItemsSchema = new mongoose.Schema(
   {

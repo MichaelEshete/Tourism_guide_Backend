@@ -153,12 +153,7 @@ app.post("/Profile", async(req,res)=>{
   const email = req.body.email
   addItems.find({ email })
   .then(data => {
-    if(err){
-      res.status(500).send(err);
-
-    }else{
       res.status(200).send(data);
-    }
   })
   .catch (console.error)
 })
