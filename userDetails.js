@@ -26,14 +26,10 @@ const addItemsSchema = new mongoose.Schema(
     title: String,
     description: String,
     file: String,
-
-
-
-
+    email: String
   },
   {
     collection: "addItems",
-
   }
 
 );
